@@ -389,11 +389,9 @@ async def echo(websocket, path):
             # _, buffer = cv2.imencode('.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), 40])
 
             await websocket.send(buffer.tobytes())
-async def main():
-    PORT = int(os.environ.get('PORT', 8000))  # Default to 8000 for local testing
-    async with websockets.serve(echo, "0.0.0.0", PORT):
-        print(f"Server is running on port {PORT}...")
-        await asyncio.Future()  # Run forever
 
-if __name__ == "__main__":
-    asyncio.run(main())
+start_server = websockets.serve(echo,"0.0.0.0",8765)
+
+asyncio.get_event_loop().run_until_complete(start_server)
+print("Server is running...")
+asyncio.get_event_loop().run_forever()
